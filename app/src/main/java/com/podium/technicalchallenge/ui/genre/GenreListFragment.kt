@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.podium.technicalchallenge.R
@@ -47,31 +48,37 @@ class GenreListFragment : Fragment() {
 
 @Composable
 fun ListOfGenres(view: View?, viewModel: MovieViewModel) {
-    LazyColumn {
-        items(viewModel.genres) { genre ->
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .clickable {
-                        viewModel.loadMovies(genre = genre)
-                        view
-                            ?.findNavController()
-                            ?.navigate(R.id.action_genre_list_fragment_to_movie_list_fragment)
-                    },
-            ) {
-                Text(
-                    text = genre,
-                    fontSize = dimensionResource(id = R.dimen.movie_title_subtitle_text_size).value.sp
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Divider(modifier = Modifier.background(Color.Gray), thickness = 2.dp)
-            }
-        }
-        item {
-            LoadingIndicator(viewModel)
-        }
+   Column {
+       Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.main_spacer)))
+       LazyColumn {
+           items(viewModel.genres) { genre ->
+               Column(
+                   verticalArrangement = Arrangement.Center,
+                   horizontalAlignment = Alignment.Start,
+                   modifier = Modifier
+                       .padding(start = 4.dp, end = 4.dp)
+                       .clickable {
+                           viewModel.viewMode = MovieViewModel.ViewMode.GENRE
+                           viewModel.genre = genre
+                           viewModel.loadMovies(genre = genre)
+                           val bundle = bundleOf("genre" to genre)
+                           view
+                               ?.findNavController()
+                               ?.navigate(R.id.action_genre_list_fragment_to_movie_list_fragment, bundle)
+                       },
+               ) {
+                   Text(
+                       text = genre,
+                       fontSize = dimensionResource(id = R.dimen.movie_list_row_label).value.sp
+                   )
+                   Spacer(modifier = Modifier.size(8.dp))
+                   Divider(modifier = Modifier.background(Color.Gray), thickness = 1.dp)
+               }
+           }
+           item {
+               LoadingIndicator(viewModel)
+           }
+       }
     }
 }
 

@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.podium.technicalchallenge.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/browse_movies"
         tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_navigation_dashboard_to_movie_list"
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/movie_list_fragment"
         android:name="com.podium.technicalchallenge.ui.movie.MovieListFragment"
-        android:label="Movies"
+        android:label="@string/movies"
         tools:layout="@layout/fragment_movie_list">
         <action
             android:id="@+id/action_movie_list_fragment_to_navigation_dashboard"
@@ -35,8 +35,8 @@
     <fragment
         android:id="@+id/genre_list_fragment"
         android:name="com.podium.technicalchallenge.ui.genre.GenreListFragment"
-        android:label="fragment_genre_list"
-        tools:layout="@layout/fragment_genre_list" >
+        android:label="@string/browse_genre"
+        tools:layout="@layout/fragment_genre_list">
         <action
             android:id="@+id/action_genre_list_fragment_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard"
@@ -49,8 +49,8 @@
     <fragment
         android:id="@+id/movie_detail_fragment"
         android:name="com.podium.technicalchallenge.ui.movie.MovieDetailFragment"
-        android:label="fragment_movie_detail"
-        tools:layout="@layout/fragment_movie_detail" >
+        android:label="@string/movie_details"
+        tools:layout="@layout/fragment_movie_detail">
         <action
             android:id="@+id/action_movieDetailFragment_to_movie_list_fragment"
             app:destination="@id/movie_list_fragment" />

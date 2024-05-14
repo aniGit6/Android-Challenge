@@ -1,7 +1,5 @@
 package com.podium.technicalchallenge.entity
 
-import androidx.compose.runtime.mutableStateOf
-
 data class MovieResponse(
     val data: Movies
 )
@@ -33,6 +31,14 @@ data class MovieDetailEntity(
 ) {
     fun genresAsString(): String {
         return this.genres.joinToString(", ").trim()
+    }
+
+    fun castAsString(): String {
+        val list = mutableListOf<String>()
+        this.cast.forEach {castMember ->
+            list.add(castMember.name)
+        }
+        return list.joinToString(", ").trim()
     }
 }
 

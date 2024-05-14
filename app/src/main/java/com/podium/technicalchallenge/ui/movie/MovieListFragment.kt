@@ -49,39 +49,43 @@ class MovieListFragment : Fragment() {
 
 @Composable
 fun ListOfMovies(view: View?, viewModel: MovieViewModel) {
-    LazyColumn {
-        items(viewModel.movies.size) { i ->
-            val movie = viewModel.movies.get(i)
-            if (i >= viewModel.movies.size - 1) {
-                // TODO: Clean this up to work for any state
-//                viewModel.loadMovies(offset = viewModel.movies.size - 1)
+    Column {
+        Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.spacer)))
+        LazyColumn {
+            items(viewModel.movies.size) { i ->
+                val movie = viewModel.movies.get(i)
+                if (viewModel.state.endReached()) {
+                    viewModel.loadMovies(offset = viewModel.movies.size - 1, genre = viewModel.genre)
+                }
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp)
+                        .clickable {
+                            viewModel.getMovieDetails(movie.id)
+                            view
+                                ?.findNavController()
+                                ?.navigate(R.id.action_movie_list_fragment_to_movieDetailFragment)
+                        }
+                ) {
+                    Spacer(modifier = Modifier.size(4.dp))
+                    Text(
+                        text = stringResource(id = R.string.movie_title, movie.title),
+                        fontSize = dimensionResource(id = R.dimen.movie_list_row_label).value.sp
+                    )
+                    Spacer(modifier = Modifier.size(2.dp))
+                    Text(
+                        text = stringResource(id = R.string.movie_overview, movie.title),
+                        fontSize = dimensionResource(id = R.dimen.movie_list_row_label).value.sp
+                    )
+                    Spacer(modifier = Modifier.size(4.dp))
+                    Divider(modifier = Modifier.background(Color.Gray), thickness = 1.dp)
+                }
             }
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .clickable {
-                        viewModel.getMovieDetails(movie.id)
-                        view
-                            ?.findNavController()
-                            ?.navigate(R.id.action_movie_list_fragment_to_movieDetailFragment)
-                    }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.movie_title, movie.title),
-                    fontSize = dimensionResource(id = R.dimen.movie_title_subtitle_text_size).value.sp
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Text(
-                    text = stringResource(id = R.string.movie_overview, movie.title),
-                    fontSize = dimensionResource(id = R.dimen.movie_title_subtitle_text_size).value.sp
-                )
-                Divider(modifier = Modifier.background(Color.Gray), thickness = 2.dp)
+            item {
+                LoadingIndicator(viewModel)
             }
-        }
-        item {
-            LoadingIndicator(viewModel)
         }
     }
 }

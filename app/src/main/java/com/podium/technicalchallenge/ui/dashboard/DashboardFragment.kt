@@ -10,21 +10,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
@@ -40,7 +34,7 @@ import com.podium.technicalchallenge.viewmodels.MovieViewModel
 
 class DashboardFragment : Fragment() {
 
-    private val viewModel : MovieViewModel by activityViewModels()
+    private val viewModel: MovieViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,13 +45,8 @@ class DashboardFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 Column(modifier = Modifier.background(colorResource(id = R.color.auqua))) {
-                    Text(
-                        text = stringResource(id = R.string.browse_movies),
-                        fontSize = dimensionResource(id = R.dimen.movie_title_text_size).value.sp,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.movie_spacer)))
-                ListBrowsingCategories (view, viewModel)
+                    Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.main_spacer)))
+                    ListBrowsingCategories(view, viewModel)
                 }
             }
         }
@@ -68,22 +57,27 @@ class DashboardFragment : Fragment() {
     }
 }
 
-//@Preview
 @Composable
 fun ListBrowsingCategories(view: View?, viewModel: MovieViewModel) {
 
     Column {
         BrowseMovieCard(R.string.top_five_movies) {
             viewModel.loadMovies(limit = 5)
+            viewModel.viewMode = MovieViewModel.ViewMode.TOP_FIVE
+            viewModel.genre = null
             view?.findNavController()?.navigate(R.id.action_navigation_dashboard_to_movie_list)
         }
         Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.spacer).value.dp))
         BrowseMovieCard(R.string.browse_genre) {
+            viewModel.viewMode = MovieViewModel.ViewMode.GENRE
             viewModel.loadGenres()
-            view?.findNavController()?.navigate(R.id.action_navigation_dashboard_to_genre_list_fragment)
+            view?.findNavController()
+                ?.navigate(R.id.action_navigation_dashboard_to_genre_list_fragment)
         }
         Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.spacer).value.dp))
         BrowseMovieCard(R.string.browse_all) {
+            viewModel.viewMode = MovieViewModel.ViewMode.ALL
+            viewModel.genre = null
             viewModel.loadMovies()
             view?.findNavController()?.navigate(R.id.action_navigation_dashboard_to_movie_list)
         }
@@ -98,11 +92,18 @@ private fun BrowseMovieCard(string_id: Int = 0, clickListener: () -> Unit) {
         .height(80.dp)
         .clickable { clickListener.invoke() }
     ) {
-        Text(
-            text = stringResource(id = string_id),
-            modifier = Modifier.padding(start = 4.dp),
-            fontSize = dimensionResource(id = R.dimen.movie_title_subtitle_text_size).value.sp,
-            textAlign = TextAlign.Center
-        )
+        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                Text(
+                    text = stringResource(id = string_id),
+                    modifier = Modifier.padding(start = 4.dp),
+                    fontSize = dimensionResource(id = R.dimen.movie_list_row_label).value.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }

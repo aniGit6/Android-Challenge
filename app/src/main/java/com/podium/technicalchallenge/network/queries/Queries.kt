@@ -17,17 +17,6 @@ object Queries {
         }
     """
 
-    fun getTopFiveMovies() =
-        """
-        query GetMoviesPagingQuery {
-            movies(limit: 5, orderBy: "popularity", sort: DESC) {
-                id
-                title
-                overview
-            }
-        }
-    """
-
     fun getGenres() =
         """
         query GetGenres {

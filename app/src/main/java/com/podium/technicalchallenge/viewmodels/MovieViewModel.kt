@@ -2,19 +2,14 @@ package com.podium.technicalchallenge.viewmodels
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.util.copy
 import com.podium.technicalchallenge.Repo
 import com.podium.technicalchallenge.entity.Movie
 import com.podium.technicalchallenge.entity.MovieDetailEntity
-import com.podium.technicalchallenge.entity.Movies
 import com.podium.technicalchallenge.network.queries.Queries
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class MovieViewModel : ViewModel() {
@@ -22,10 +17,20 @@ class MovieViewModel : ViewModel() {
     var genres = mutableStateListOf<String>()
     val state: State = State()
     var movie = mutableStateOf<MovieDetailEntity?>(null)
+    var responseSize : Int = Repo.LIMIT
+    var viewMode : ViewMode = ViewMode.ALL
+    var genre: String? = null
+
+    enum class ViewMode {
+        TOP_FIVE,
+        GENRE,
+        ALL
+    }
 
     fun loadMovies(limit: Int = Repo.LIMIT, offset: Int = 0, genre: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             this@MovieViewModel.state.isLoading = true
+
             if (offset == 0) {
                 this@MovieViewModel.movies.clear()
             }
@@ -34,11 +39,14 @@ class MovieViewModel : ViewModel() {
             }
             else if (genre != null) {
                 val movies = Repo.getInstance().getMoviesForGenre(limit, offset, genre).toMutableStateList()
+                this@MovieViewModel.responseSize = movies.count()
                 this@MovieViewModel.movies.addAll(
                     movies
                 )
             } else {
-                this@MovieViewModel.movies.addAll(Repo.getInstance().getMovies(limit, offset))
+                val movies = Repo.getInstance().getMovies(limit, offset)
+                this@MovieViewModel.responseSize = movies.count()
+                this@MovieViewModel.movies.addAll(movies)
             }
             this@MovieViewModel.state.isLoading = false
         }
@@ -61,9 +69,11 @@ class MovieViewModel : ViewModel() {
             this@MovieViewModel.state.isLoading = false
         }
     }
+
+    inner class State(var isLoading: Boolean = false) {
+        fun endReached(): Boolean {
+            return ((this@MovieViewModel.viewMode == ViewMode.ALL || this@MovieViewModel.viewMode  == ViewMode.GENRE) && responseSize >= Repo.LIMIT)
+        }
+    }
 }
 
-class State() {
-    var isLoading: Boolean = false
-    var endReached: Boolean = false
-}
