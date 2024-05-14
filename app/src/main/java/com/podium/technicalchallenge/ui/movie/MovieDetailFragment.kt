@@ -74,7 +74,7 @@ fun RenderMovieDetails(viewModel: MovieViewModel) {
             Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.main_spacer)))
             // Rating
             LabelText(stringId = R.string.rating)
-            ItemText(string = movie.title)
+            ItemText(string = movie.popularity)
             Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.main_spacer)))
             // Genres
             LabelText(stringId = R.string.genres)

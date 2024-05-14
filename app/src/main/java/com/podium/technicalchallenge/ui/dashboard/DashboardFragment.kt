@@ -44,7 +44,7 @@ class DashboardFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                Column(modifier = Modifier.background(colorResource(id = R.color.auqua))) {
+                Column(modifier = Modifier.background(colorResource(id = R.color.lavendar))) {
                     Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.main_spacer)))
                     ListBrowsingCategories(view, viewModel)
                 }

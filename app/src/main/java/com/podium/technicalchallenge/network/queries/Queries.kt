@@ -42,6 +42,7 @@ object Queries {
                 title
                 overview
                 posterPath
+                popularity
                 genres
                 cast {
                     profilePath

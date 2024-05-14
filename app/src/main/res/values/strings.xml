@@ -6,6 +6,7 @@
     <string name="top_five_movies">Top 5 Movies!</string>
     <string name="movie_title">Title: %1$s</string>
     <string name="movie_overview">Overview: %1$s</string>
+    <string name="overview">Overview</string>
     <string name="browse_genre">Browse By Genre</string>
     <string name="browse_all">Browse All Movies</string>
     <string name="browse_movies">Browse Movies</string>
