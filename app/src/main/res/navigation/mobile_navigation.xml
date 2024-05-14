@@ -3,12 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
+    android:label="@string/movie_overview"
     app:startDestination="@+id/navigation_dashboard">
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.podium.technicalchallenge.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_navigation_dashboard_to_movie_list"
+            app:destination="@id/movie_list_fragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_genre_list_fragment"
+            app:destination="@id/genre_list_fragment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/movie_list_fragment"
+        android:name="com.podium.technicalchallenge.ui.movie.MovieListFragment"
+        android:label="Movies"
+        tools:layout="@layout/fragment_movie_list">
+        <action
+            android:id="@+id/action_movie_list_fragment_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard"
+            app:popUpTo="@id/navigation_dashboard" />
+        <action
+            android:id="@+id/action_movie_list_fragment_to_movieDetailFragment"
+            app:destination="@id/movie_detail_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/genre_list_fragment"
+        android:name="com.podium.technicalchallenge.ui.genre.GenreListFragment"
+        android:label="fragment_genre_list"
+        tools:layout="@layout/fragment_genre_list" >
+        <action
+            android:id="@+id/action_genre_list_fragment_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard"
+            app:popUpTo="@id/navigation_dashboard"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_genre_list_fragment_to_movie_list_fragment"
+            app:destination="@id/movie_list_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movie_detail_fragment"
+        android:name="com.podium.technicalchallenge.ui.movie.MovieDetailFragment"
+        android:label="fragment_movie_detail"
+        tools:layout="@layout/fragment_movie_detail" >
+        <action
+            android:id="@+id/action_movieDetailFragment_to_movie_list_fragment"
+            app:destination="@id/movie_list_fragment" />
+    </fragment>
 </navigation>
