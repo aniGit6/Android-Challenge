@@ -1,6 +1,5 @@
 package com.podium.technicalchallenge
 
-import android.util.Log
 import com.google.gson.Gson
 import com.podium.technicalchallenge.entity.GenreResponse
 import com.podium.technicalchallenge.entity.Movie
@@ -27,9 +26,9 @@ class Repo {
         return data.data.movies
     }
 
-    suspend fun getMoviesForGenre(limit: Int = LIMIT, offset: Int, genre: String): List<Movie> {
+    suspend fun getMoviesForGenre(limit: Int = LIMIT, offset: Int, genre: String, order: String = "title", sort: Queries.MOVIE_SORT_DIRECTION = Queries.MOVIE_SORT_DIRECTION.ASC): List<Movie> {
         val paramObject = JSONObject()
-        val query = Queries.getMoviesByGenre(limit, offset, genre)
+        val query = Queries.getMoviesByGenre(limit, offset, genre, order, sort)
         paramObject.put("query", query)
 
         val response =

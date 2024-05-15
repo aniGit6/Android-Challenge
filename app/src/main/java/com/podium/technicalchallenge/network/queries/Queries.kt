@@ -24,10 +24,10 @@ object Queries {
         }
     """
 
-    fun getMoviesByGenre(limit: Int, offset: Int = 0, genre: String) =
+    fun getMoviesByGenre(limit: Int, offset: Int = 0, genre: String, order: String, sort: MOVIE_SORT_DIRECTION) =
         """
             query GetMoviesByGenre {
-            movies(limit: $limit ,offset: $offset, genre: "$genre") {
+            movies(limit: $limit ,offset: $offset, genre: "$genre", orderBy: "$order", sort: ${sort.name}) {
                 id
                 title
                 overview

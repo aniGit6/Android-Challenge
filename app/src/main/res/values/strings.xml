@@ -19,4 +19,7 @@
     <string name="description">Description</string>
     <string name="cast">Cast</string>
     <string name="director">Director</string>
+    <string name="action_sort_title">Sort by Title</string>
+    <string name="action_sort_popularity">Sort by Popularity</string>
+    <string name="action_sort_runtime">Sort by Runtime</string>
 </resources>

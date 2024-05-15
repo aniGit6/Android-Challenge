@@ -70,6 +70,7 @@ fun ListBrowsingCategories(view: View?, viewModel: MovieViewModel) {
         Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.spacer).value.dp))
         BrowseMovieCard(R.string.browse_genre) {
             viewModel.viewMode = MovieViewModel.ViewMode.GENRE
+            viewModel.genre = null
             viewModel.loadGenres()
             view?.findNavController()
                 ?.navigate(R.id.action_navigation_dashboard_to_genre_list_fragment)
