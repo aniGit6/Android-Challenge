@@ -67,32 +67,36 @@ class MovieListFragment : Fragment() {
                 val genre = viewModel.genre
                 when (menuItem.itemId) {
                     R.id.action_title -> {
+                        val orderBy = "title"
+                        viewModel.order = orderBy
                         if (genre != null) {
-                            viewModel.loadMovies(genre = genre, order = "title")
+                            viewModel.loadMovies(genre = genre, order = orderBy)
                         } else {
-                            viewModel.loadMovies(order = "title")
+                            viewModel.loadMovies(order = orderBy)
                         }
 
                         return true
                     }
 
                     R.id.action_popularity -> {
+                        val orderBy = "popularity"
+                        viewModel.order = orderBy
                         if (genre != null) {
-                            viewModel.loadMovies(genre = genre, order = "popularity")
+                            viewModel.loadMovies(genre = genre, order = orderBy)
                         } else {
-                            viewModel.loadMovies(order = "popularity")
+                            viewModel.loadMovies(order = orderBy)
                         }
-
                         return true
                     }
 
                     R.id.action_runtime -> {
+                        val orderBy = "runtime"
+                        viewModel.order = orderBy
                         if (genre != null) {
-                            viewModel.loadMovies(genre = genre, order = "runtime")
+                            viewModel.loadMovies(genre = genre, order = orderBy)
                         } else {
-                            viewModel.loadMovies(order = "runtime")
+                            viewModel.loadMovies(order = orderBy)
                         }
-
                         return true
                     }
                 }
@@ -112,7 +116,8 @@ fun ListOfMovies(view: View?, viewModel: MovieViewModel) {
                 if (viewModel.state.endReached()) {
                     viewModel.loadMovies(
                         offset = viewModel.movies.size - 1,
-                        genre = viewModel.genre
+                        genre = viewModel.genre,
+                        order = viewModel.order ?: "title"
                     )
                 }
                 Column(

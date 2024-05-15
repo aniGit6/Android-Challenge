@@ -21,6 +21,7 @@ class MovieViewModel : ViewModel() {
     var responseSize : Int = Repo.LIMIT
     var viewMode : ViewMode = ViewMode.ALL
     var genre: String? = null
+    var order: String? = null
     private val TAG = "MovieViewModel"
 
     enum class ViewMode {
@@ -40,7 +41,7 @@ class MovieViewModel : ViewModel() {
                 this@MovieViewModel.movies.addAll(Repo.getInstance().getMovies(limit, offset, order = "popularity", sort = Queries.MOVIE_SORT_DIRECTION.DESC))
             }
             else if (genre != null) {
-                val movies = Repo.getInstance().getMoviesForGenre(limit, offset, genre, order = order, sort = sort).toMutableStateList()
+                val movies = Repo.getInstance().getMoviesForGenre(limit, offset, genre, order, sort = sort).toMutableStateList()
                 this@MovieViewModel.responseSize = movies.count()
                 this@MovieViewModel.movies.addAll(
                     movies
